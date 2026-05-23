@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goodness Adefope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0c0c0e; --bg2: #141416; --bg3: #1c1c20;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+    --text: #f0ede8; --muted: #7a7975; --accent: #c8b89a; --accent2: #a08060;
+    --green: #4caf8a;
+    --ff-display: 'DM Serif Display', Georgia, serif;
+    --ff-body: 'DM Sans', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--ff-body); font-size: 15px; line-height: 1.7; min-height: 100vh; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(12,12,14,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 56px;
+  }
+  .nav-name { font-family: var(--ff-display); font-size: 18px; color: var(--accent); letter-spacing: 0.01em; cursor: pointer; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active-link { color: var(--text); }
+
+  section { display: none; }
+  section.active { display: block; }
+
+  .hero-inner { min-height: calc(100vh - 56px); display: flex; flex-direction: column; justify-content: center; padding: 5rem 2.5rem 4rem; max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; }
+  .hero-headshot { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(200,184,154,0.3); flex-shrink: 0; }
+  .hero-headshot-placeholder { width: 110px; height: 110px; border-radius: 50%; background: var(--bg3); border: 2px dashed var(--border2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hero-headshot-placeholder span { font-size: 11px; color: var(--muted); text-align: center; padding: 8px; line-height: 1.4; }
+  .hero-tag { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .hero-tag::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--accent2); }
+  h1.hero-title { font-family: var(--ff-display); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.08; font-weight: 400; color: var(--text); margin-bottom: 1.5rem; }
+  h1.hero-title em { color: var(--accent); font-style: italic; }
+  .hero-sub { font-size: 17px; color: var(--muted); max-width: 560px; line-height: 1.8; margin-bottom: 2.5rem; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 500; letter-spacing: 0.03em; cursor: pointer; text-decoration: none; border: 1px solid var(--border2); background: transparent; color: var(--text); transition: all 0.2s; font-family: var(--ff-body); }
+  .btn:hover { background: var(--bg3); border-color: var(--accent2); color: var(--accent); }
+  .btn-primary { background: var(--accent); color: #0c0c0e; border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); color: #0c0c0e; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 4rem 2.5rem; }
+  .page-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.75rem; }
+  .page-title { font-family: var(--ff-display); font-size: 2.5rem; font-weight: 400; color: var(--text); margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 280px; gap: 4rem; align-items: start; }
+  .about-body p { color: #c0bdb8; line-height: 1.85; margin-bottom: 1.25rem; }
+  .about-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .about-card h4 { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1rem; }
+  .about-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 1rem; font-size: 13px; color: #aaa9a5; }
+  .about-item-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); margin-top: 7px; flex-shrink: 0; }
+
+  .research-item { border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; background: var(--bg2); transition: border-color 0.2s; }
+  .research-item:hover { border-color: var(--border2); }
+  .research-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin-bottom: 0.5rem; }
+  .research-title { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+  .research-meta { font-size: 13px; color: var(--muted); margin-bottom: 0.75rem; }
+  .research-desc { font-size: 14px; color: #a0a09c; line-height: 1.75; }
+
+  .awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+  .award-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; transition: border-color 0.2s; }
+  .award-card:hover { border-color: var(--border2); }
+  .award-card img { width: 100%; border-radius: 4px; margin-bottom: 0.75rem; object-fit: cover; height: 160px; display: block; }
+  .award-year { font-size: 12px; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .award-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 0.35rem; }
+  .award-org { font-size: 13px; color: var(--muted); }
+
+  .org-item { border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; background: var(--bg2); transition: border-color 0.2s; }
+  .org-item:hover { border-color: var(--border2); }
+  .org-role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+  .org-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 0.35rem; }
+  .org-meta { font-size: 13px; color: var(--muted); margin-bottom: 0.75rem; }
+  .org-desc { font-size: 14px; color: #a0a09c; line-height: 1.75; }
+
+  .resume-section { margin-bottom: 2.5rem; }
+  .resume-section-title { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .resume-entry { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .resume-entry-title { font-size: 15px; font-weight: 500; color: var(--text); }
+  .resume-entry-sub { font-size: 13px; color: var(--accent); margin-top: 2px; }
+  .resume-entry-date { font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+  .resume-entry-desc { font-size: 13px; color: #a0a09c; margin-top: 0.5rem; line-height: 1.7; grid-column: 1 / -1; }
+  .skill-tag { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 5px 12px; font-size: 13px; color: #b0ada8; display: inline-block; margin: 4px; }
+  .download-row { margin-bottom: 2.5rem; }
+
+  /* THOUGHTS LIST */
+  .post-card { border: 1px solid var(--border); border-radius: 6px; padding: 1.75rem; margin-bottom: 1rem; background: var(--bg2); cursor: pointer; transition: border-color 0.2s; }
+  .post-card:hover { border-color: var(--border2); }
+  .post-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem; }
+  .post-date { font-size: 12px; color: var(--muted); margin-bottom: 0.4rem; }
+  .post-title { font-family: var(--ff-display); font-size: 1.3rem; font-weight: 400; color: var(--text); line-height: 1.3; }
+  .post-preview { font-size: 14px; color: #a0a09c; line-height: 1.75; margin-top: 0.5rem; }
+  .post-card-arrow { color: var(--muted); font-size: 18px; flex-shrink: 0; margin-top: 4px; transition: color 0.2s; }
+  .post-card:hover .post-card-arrow { color: var(--accent); }
+
+  /* POST VIEW */
+  #post-view { display: none; }
+  .post-view-date { font-size: 13px; color: var(--muted); margin-bottom: 0.75rem; }
+  .post-view-title { font-family: var(--ff-display); font-size: 2.4rem; font-weight: 400; color: var(--text); line-height: 1.15; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .post-view-body { color: #c0bdb8; line-height: 2; font-size: 16px; max-width: 680px; }
+  .post-view-body p { margin-bottom: 1.6rem; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; background: none; border: none; font-family: var(--ff-body); margin-bottom: 2.5rem; padding: 0; transition: color 0.2s; }
+  .back-btn:hover { color: var(--accent); }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; text-align: center; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  @media (max-width: 700px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { gap: 0.75rem; }
+    .nav-links a { font-size: 11px; }
+    .page { padding: 3rem 1.25rem; }
+    .hero-inner { padding: 3rem 1.25rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    h1.hero-title { font-size: 2.5rem; }
+    .hero-top { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name" onclick="showSection('home')">Goodness Adefope</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showSection('home'); return false;">Home</a></li>
+    <li><a href="#" onclick="showSection('about'); return false;">About</a></li>
+    <li><a href="#" onclick="showSection('research'); return false;">Research</a></li>
+    <li><a href="#" onclick="showSection('orgs'); return false;">Organizations</a></li>
+    <li><a href="#" onclick="showSection('awards'); return false;">Awards</a></li>
+    <li><a href="#" onclick="showSection('resume'); return false;">Resume</a></li>
+    <li><a href="#" onclick="showSection('thoughts'); return false;">Thoughts</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <img src="headshot.jpg" alt="Goodness Adefope" class="hero-headshot" onerror="this.style.display='none'; document.getElementById('headshot-placeholder').style.display='flex';">
+      <div id="headshot-placeholder" class="hero-headshot-placeholder" style="display:none;">
+        <span>Upload headshot.jpg to GitHub</span>
+      </div>
+    </div>
+    <div class="hero-tag">OMS-II · Michigan State University COM</div>
+    <h1 class="hero-title">Goodness Adefope.<br><em>Medical Student. Researcher.</em></h1>
+    <p class="hero-sub">Second-year osteopathic medical student with a passion for orthopedic surgery, community service, and lifting others on the path to medicine.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="showSection('research')">View Research</button>
+      <button class="btn" onclick="showSection('about')">About Me</button>
+      <button class="btn" onclick="showSection('thoughts')">Thoughts</button>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="page">
+    <p class="page-label">Background</p>
+    <h2 class="page-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-body">
+        <p>I'm a second-year osteopathic medical student at Michigan State University College of Osteopathic Medicine, with a strong interest in orthopedic surgery. I'm actively seeking research opportunities and enjoy mentoring pre-medical students, paying forward the guidance that shaped my own path.</p>
+        <p>This website is a small peek into my journey as a medical student: the work I'm doing, the things I'm learning, and the ideas I'm thinking through. Medicine is demanding, but so is the curiosity that brought me here, and I wouldn't have it any other way.</p>
+        <p>Outside of medicine, I'm a Lagos native who loves cooking, running, lifting, and saying yes to things I haven't tried before.</p>
+      </div>
+      <div>
+        <div class="about-card">
+          <h4>Quick Facts</h4>
+          <div class="about-item"><div class="about-item-dot"></div><div>OMS-II, MSU-COM</div></div>
+          <div class="about-item"><div class="about-item-dot"></div><div>From Lagos, Nigeria</div></div>
+          <div class="about-item"><div class="about-item-dot"></div><div>Goal: Orthopedic Surgery</div></div>
+          <div class="about-item"><div class="about-item-dot"></div><div>Lifelong learner</div></div>
+          <div class="about-item"><div class="about-item-dot"></div><div>Cooking, running, working out</div></div>
+          <div class="about-item"><div class="about-item-dot"></div><div>Always trying something new</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="page">
+    <p class="page-label">Work</p>
+    <h2 class="page-title">Research &amp; Presentations</h2>
+    <div class="research-item">
+      <div class="research-type">Ongoing · Cardiovascular</div>
+      <div class="research-title">Assessing the Influence of Exercise Timing on Blood Pressure in Postmenopausal Women</div>
+      <div class="research-meta">MSUCOM · February 2025 – Present</div>
+      <div class="research-desc">Investigating the impact of exercise timing (morning vs. evening) on blood pressure regulation in postmenopausal women. Conducting treadmill bouts and handgrip measurements over 6-week intervals to determine optimal exercise timing for managing hypertension.</div>
+    </div>
+    <div class="research-item">
+      <div class="research-type">Ongoing · Pain Medicine / OMM</div>
+      <div class="research-title">Using Fuzzy Cognitive Mapping to Understand the Perspective of Patients with Low Back Pain</div>
+      <div class="research-meta">MSUCOM · February 2025 – Present</div>
+      <div class="research-desc">Researching how patients' perceptions of low back pain change after Osteopathic Manipulative Medicine treatment. Participants complete surveys and virtual interviews across two sessions spaced three months apart.</div>
+    </div>
+    <div class="research-item">
+      <div class="research-type">Poster Presentation · April 2026</div>
+      <div class="research-title">Morning Person or Night Owl? How Chronotype Shapes Perceived Effort</div>
+      <div class="research-meta">Student National Medical Association Annual Medical Education Conference</div>
+      <div class="research-desc">Poster presentation examining how an individual's chronotype influences their perception of physical and cognitive effort.</div>
+    </div>
+    <div class="research-item">
+      <div class="research-type">Abstract Submission · May 2026</div>
+      <div class="research-title">International Perspectives on Low Back Pain: Insights from People with Lived Experience in Australia and the United States</div>
+      <div class="research-meta">International Society for the Study of the Lumbar Spine · South African Spine Society Conference</div>
+      <div class="research-desc">Abstract exploring cross-cultural differences in how patients experience and understand low back pain, drawing on lived experience data from two countries.</div>
+    </div>
+    <div class="research-item">
+      <div class="research-type">Completed · Environmental Biology</div>
+      <div class="research-title">Effects of Increased CO2 Concentration on Chlorella Vulgaris and Their Predators</div>
+      <div class="research-meta">Concordia University Texas · September 2022 – May 2023</div>
+      <div class="research-desc">Studied the effects of elevated CO2 on the physiology, morphology, and behavior of Chlorella vulgaris, Daphnia magna, and Daphnia pulex, contributing to understanding of climate change impacts on freshwater ecosystems.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ORGANIZATIONS -->
+<section id="orgs">
+  <div class="page">
+    <p class="page-label">Involvement</p>
+    <h2 class="page-title">Organizations</h2>
+    <div class="org-item">
+      <div class="org-role">President</div>
+      <div class="org-name">Student National Medical Association (SNMA) — MSU-COM Chapter</div>
+      <div class="org-meta">January 2024 – Present</div>
+      <div class="org-desc">Lead advocacy efforts for Black medical students, organizing events to foster inclusivity and community engagement. Coordinate initiatives including Caffeinate and Advocate, Juneteenth Paint and Sip, and Miles for Fibroids. Partner with the Pipeline Mentoring Institute to mentor underrepresented students in medicine.</div>
+    </div>
+    <div class="org-item">
+      <div class="org-role">Assistant Regional Director &amp; Osteopathic Chair</div>
+      <div class="org-name">Student National Medical Association (SNMA) — Region V</div>
+      <div class="org-meta">March 2025 – Present</div>
+      <div class="org-desc">Represent Region V (Michigan, Ohio, Indiana) at the national level, coordinating initiatives that support underrepresented medical students across multiple institutions. Serve as the national liaison for osteopathic medical student engagement, promoting DO visibility and leadership within SNMA.</div>
+    </div>
+    <div class="org-item">
+      <div class="org-role">Founder</div>
+      <div class="org-name">Keep Lansing Warm</div>
+      <div class="org-meta">January 2025 – Present</div>
+      <div class="org-desc">Founded an outreach organization distributing cold-weather gear to individuals experiencing homelessness in Lansing. Independently funded and managed logistics, volunteer participation, and fundraising to provide blankets, coats, hand warmers, gloves, and hygiene items.</div>
+    </div>
+    <div class="org-item">
+      <div class="org-role">Volunteer</div>
+      <div class="org-name">Spartan Street Medicine</div>
+      <div class="org-meta">September 2024 – Present</div>
+      <div class="org-desc">Provide direct medical care to unhoused individuals in Lansing, collaborating with healthcare professionals to address immediate health needs and deliver public health education in underserved communities.</div>
+    </div>
+    <div class="org-item">
+      <div class="org-role">Member · Stop the Bleed Certified Instructor</div>
+      <div class="org-name">American College of Osteopathic Surgeons (ACOS)</div>
+      <div class="org-meta">September 2024 – Present</div>
+      <div class="org-desc">Participated in Stop the Bleed and Narcan training sessions. Certified Stop the Bleed Instructor.</div>
+    </div>
+    <div class="org-item">
+      <div class="org-role">Member</div>
+      <div class="org-name">Community Integrated Medicine (CIM)</div>
+      <div class="org-meta">September 2024 – Present</div>
+      <div class="org-desc">Educated high school students on clinical skills by leading hands-on workshops, promoting healthcare careers among the next generation.</div>
+    </div>
+    <div class="org-item">
+      <div class="org-role">Member</div>
+      <div class="org-name">Anesthesiology Interest Group (AIG) &amp; American Society of Anesthesiologists (ASA)</div>
+      <div class="org-meta">September 2024 – Present</div>
+      <div class="org-desc">Exploring anesthesiology, perioperative care, and pain management. Participated in the Central Line simulation event.</div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="page">
+    <p class="page-label">Recognition</p>
+    <h2 class="page-title">Awards &amp; Honors</h2>
+    <div class="awards-grid">
+      <div class="award-card">
+        <div class="award-year">2026</div>
+        <div class="award-name">National Osteopathic Organization of the Year (SNMA)</div>
+        <div class="award-org">Michigan State University College of Osteopathic Medicine</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2025</div>
+        <div class="award-name">Student Leader of the Year</div>
+        <div class="award-org">Michigan State University College of Osteopathic Medicine</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2025</div>
+        <div class="award-name">Organization of the Year (SNMA)</div>
+        <div class="award-org">Michigan State University College of Osteopathic Medicine</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2023</div>
+        <div class="award-name">Outstanding Science Student of the Year</div>
+        <div class="award-org">Concordia University Texas</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2020 – 2023</div>
+        <div class="award-name">Dean's List (Seven Semesters)</div>
+        <div class="award-org">Concordia University Texas · GPA 4.0</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2022</div>
+        <div class="award-name">Student Leader of the Year</div>
+        <div class="award-org">Concordia University Texas</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2019</div>
+        <div class="award-name">Valedictorian</div>
+        <div class="award-org">NESAM International School, Oyo, Nigeria</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2019</div>
+        <div class="award-name">Best Overall Student</div>
+        <div class="award-org">NESAM International School</div>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2019</div>
+        <div class="award-name">Best JAMB Result, Best in Mathematics &amp; Best in Science</div>
+        <div class="award-org">NESAM International School</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="page">
+    <p class="page-label">Curriculum Vitae</p>
+    <h2 class="page-title">Resume</h2>
+    <div class="download-row">
+      <a class="btn" href="Adefope_Resume.pdf" download>Download PDF Resume</a>
+    </div>
+    <div class="resume-section">
+      <div class="resume-section-title">Education</div>
+      <div class="resume-entry">
+        <div>
+          <div class="resume-entry-title">Doctor of Osteopathic Medicine (D.O.) — Candidate</div>
+          <div class="resume-entry-sub">Michigan State University College of Osteopathic Medicine, East Lansing, MI</div>
+        </div>
+        <div class="resume-entry-date">July 2024 – Present</div>
+      </div>
+      <div class="resume-entry">
+        <div>
+          <div class="resume-entry-title">Bachelor of Science, Biology</div>
+          <div class="resume-entry-sub">Concordia University Texas, Austin, TX</div>
+        </div>
+        <div class="resume-entry-date">April 2023</div>
+        <div class="resume-entry-desc">GPA 4.0 · Dean's List 2020–2023 (seven semesters)</div>
+      </div>
+    </div>
+    <div class="resume-section">
+      <div class="resume-section-title">Work Experience</div>
+      <div class="resume-entry">
+        <div>
+          <div class="resume-entry-title">Clinical Laboratory Technologist</div>
+          <div class="resume-entry-sub">Genview Diagnosis</div>
+        </div>
+        <div class="resume-entry-date">April 2023 – August 2024</div>
+        <div class="resume-entry-desc">Performed diagnostic testing including hormone assays, enzyme measurements, and infectious disease screenings. Collaborated with healthcare providers to interpret results and support clinical decision-making.</div>
+      </div>
+      <div class="resume-entry">
+        <div>
+          <div class="resume-entry-title">Teacher's Assistant, Microbiology</div>
+          <div class="resume-entry-sub">Concordia University Texas</div>
+        </div>
+        <div class="resume-entry-date">January 2022 – May 2023</div>
+      </div>
+      <div class="resume-entry">
+        <div>
+          <div class="resume-entry-title">Tutor, School of Natural &amp; Applied Sciences</div>
+          <div class="resume-entry-sub">Concordia University Texas</div>
+        </div>
+        <div class="resume-entry-date">September 2021 – May 2023</div>
+        <div class="resume-entry-desc">Tutored 40+ students in biology and chemistry with a 100% pass rate and 90% earning at least a B.</div>
+      </div>
+    </div>
+    <div class="resume-section">
+      <div class="resume-section-title">Skills &amp; Interests</div>
+      <div>
+        <span class="skill-tag">Orthopedic Surgery</span>
+        <span class="skill-tag">Clinical Research</span>
+        <span class="skill-tag">Community Outreach</span>
+        <span class="skill-tag">Stop the Bleed Certified Instructor</span>
+        <span class="skill-tag">Medical Mentorship</span>
+        <span class="skill-tag">Bilingual: English &amp; Yoruba</span>
+        <span class="skill-tag">Osteopathic Medicine</span>
+        <span class="skill-tag">Science Writing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THOUGHTS -->
+<section id="thoughts">
+  <div class="page">
+    <p class="page-label">Writing</p>
+    <h2 class="page-title">Thoughts</h2>
+
+    <!-- POST VIEW -->
+    <div id="post-view">
+      <button class="back-btn" onclick="closePost()">&#8592; Back to all posts</button>
+      <div class="post-view-date" id="pv-date"></div>
+      <div class="post-view-title" id="pv-title"></div>
+      <div class="post-view-body" id="pv-body"></div>
+    </div>
+
+    <!-- POST LIST -->
+    <div id="thoughts-main">
+      <div id="thoughts-list"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 Goodness Adefope &nbsp;&middot;&nbsp; Built with intention
+</footer>
+
+<script>
+  // ── POSTS ──────────────────────────────────────────────────────────────────
+  // To add a new post, copy one of the objects below and add it to the TOP of
+  // the array. Fill in: id (any unique number), date, title, and paragraphs.
+  const POSTS = [
+    {
+      id: 1,
+      date: "May 2025",
+      title: "Clean Clothes and the Quiet Weight of Being Seen",
+      paragraphs: [
+        "Clean clothes are something most of us never think twice about. They are folded at the end of the day, tossed into a hamper, and quietly reappear washed and ready. But for many people experiencing homelessness, access to something as basic as clean clothes is not routine, and the absence of it carries consequences far beyond appearance. It affects how people are treated, how they feel about themselves, and whether they are able to access opportunities that could change their lives.",
+        "The health disparity at the center of this is hygiene insecurity as a social determinant of health. Not a condition diagnosed in a clinic. A condition created long before anyone walks through a hospital door.",
+        "Local research in Detroit tells part of the story. During infectious disease outbreaks, unhoused individuals reported limited access to showers, clean clothing, and basic sanitation as primary vulnerabilities. The consequences were not abstract: skin and soft tissue infections, louse-borne illnesses, preventable hospitalizations. Not a failure of medicine. A failure of access to something as solvable as a washing machine.",
+        "Beyond the physical, there is a psychological weight that often goes unspoken. Studies show that people internalize the visible markers of uncleanliness. It drives stigma, social withdrawal, and a quiet erosion of self-worth. It compounds existing trauma. It convinces people, over time, that they are not worthy of care. That is not something you can treat with a prescription.",
+        "There is also an economic door that clean clothes open or close. In Southeast Michigan, affordable laundromats are scarce, and those that exist are often inaccessible by cost or transportation. People experiencing homelessness are frequently excluded from employment not because of lack of skill or motivation, but because they cannot meet basic expectations of presentability. Clean clothes become a gatekeeper to work, reinforcing the very cycles we say we want to break.",
+        "We talk a lot in medicine about treating disease. We talk less about the conditions that make disease inevitable.",
+        "Research shows that upstream interventions addressing basic needs reduce emergency department visits, hospitalizations, and public service costs. The math is not complicated. What is complicated is convincing systems to act on what the evidence already says.",
+        "Sometimes the most clinical thing we can do is make sure someone has clean clothes to wear. Not because it solves everything. Because it is the kind of care that says: you are worth showing up for."
+      ]
+    }
+    // ADD NEW POSTS ABOVE THIS LINE
+  ];
+
+  // ── SECTIONS ───────────────────────────────────────────────────────────────
+  const SECTIONS = ['home','about','research','orgs','awards','resume','thoughts'];
+
+  function showSection(id) {
+    SECTIONS.forEach(s => {
+      const el = document.getElementById(s);
+      if (el) el.classList.toggle('active', s === id);
+    });
+    document.querySelectorAll('.nav-links a').forEach((a, i) => {
+      a.classList.toggle('active-link', SECTIONS[i] === id);
+    });
+    if (id === 'thoughts') {
+      document.getElementById('post-view').style.display = 'none';
+      document.getElementById('thoughts-main').style.display = 'block';
+      renderPosts();
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function renderPosts() {
+    const container = document.getElementById('thoughts-list');
+    if (!container) return;
+    container.innerHTML = POSTS.map(p => {
+      const preview = p.paragraphs[0].slice(0, 160) + '...';
+      return `<div class="post-card" onclick="openPost(${p.id})">
+        <div>
+          <div class="post-date">${p.date}</div>
+          <div class="post-title">${p.title}</div>
+          <div class="post-preview">${preview}</div>
+        </div>
+        <div class="post-card-arrow">&#8594;</div>
+      </div>`;
+    }).join('');
+  }
+
+  function openPost(id) {
+    const post = POSTS.find(p => p.id === id);
+    if (!post) return;
+    document.getElementById('pv-date').textContent = post.date;
+    document.getElementById('pv-title').textContent = post.title;
+    document.getElementById('pv-body').innerHTML = post.paragraphs.map(p => `<p>${p}</p>`).join('');
+    document.getElementById('post-view').style.display = 'block';
+    document.getElementById('thoughts-main').style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+
+  function closePost() {
+    document.getElementById('post-view').style.display = 'none';
+    document.getElementById('thoughts-main').style.display = 'block';
+  }
+
+  renderPosts();
+</script>
+</body>
+</html>
